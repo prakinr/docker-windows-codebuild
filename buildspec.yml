@@ -1,0 +1,29 @@
+version: 0.2
+
+env:
+  variables:
+    REPOSITORY_URI: 918565533547.dkr.ecr.us-east-1.amazonaws.com/codebuild-project-winows-docker
+    
+phases:
+  pre_build:
+    commands:
+      - $(aws ecr get-login --no-include-email --region $env:AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:latest
+      - docker build -t apache:latest .
+  post_build:
+    commands:
+      - docker tag $env:REPOSITORY_URI:latest 
+      - docker push docker push $env:REPOSITORY_URI:latest
+      - docker run --name apache -d -p 8080:80 apache:latest
+      - Start-Sleep -Seconds 5
+      - $req = Invoke-WebRequest http://$(docker inspect -f '{{ .NetworkSettings.Networks.nat.IPAddress }}' apache) -UseBasicParsing
+      - $code = $req.statuscode
+      -  if ($code -ne 200) {
+           throw "Apache test failed!"
+         }
+      - docker logs apache
+
+
+
