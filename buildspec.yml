@@ -18,11 +18,6 @@ phases:
       - docker push docker push $env:REPOSITORY_URI:latest
       - docker run --name apache -d -p 8080:80 apache:latest
       - Start-Sleep -Seconds 5
-      - $req = Invoke-WebRequest http://$(docker inspect -f '{{ .NetworkSettings.Networks.nat.IPAddress }}' apache) -UseBasicParsing
-      - $code = $req.statuscode
-      -  if ($code -ne 200) {
-           throw "Apache test failed!"
-         }
       - docker logs apache
 
 
