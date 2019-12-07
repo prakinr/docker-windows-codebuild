@@ -8,9 +8,6 @@ phases:
   install:
     runtime-versions:
       nodejs: 10
-  pre_build:
-    commands:
-      - $(aws ecr get-login --no-include-email --region us-east-1)
   build:
     commands:
       - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:latest
