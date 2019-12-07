@@ -5,6 +5,9 @@ env:
     REPOSITORY_URI: 918565533547.dkr.ecr.us-east-1.amazonaws.com/codebuild-project-winows-docker
     
 phases:
+  install:
+    runtime-versions:
+      nodejs: 10
   pre_build:
     commands:
       - $(aws ecr get-login --no-include-email --region $env:AWS_DEFAULT_REGION)
