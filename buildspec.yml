@@ -16,7 +16,7 @@ phases:
         lvm2
       - yum list docker-ce
       - sudo systemctl start docker
-build:
+  build:
     commands:
       - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:latest
       - sudo docker run hello-world
