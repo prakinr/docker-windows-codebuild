@@ -11,14 +11,12 @@ phases:
   build:
     commands:
       - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:latest
-      - docker build -t apache:latest .
+      - docker run hello-world
   post_build:
     commands:
-      - docker tag $env:REPOSITORY_URI:latest 
-      - docker push docker push $env:REPOSITORY_URI:latest
-      - docker run --name apache -d -p 8080:80 apache:latest
-      - Start-Sleep -Seconds 5
-      - docker logs apache
+      - docker images hello-world
+      - docker push $env:REPOSITORY_URI:latest
+
 
 
 
