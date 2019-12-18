@@ -9,7 +9,6 @@ phases:
   pre_build:
     commands:
       - Invoke-WebRequest -Uri https://dockermsft.blob.core.windows.net/dockercontainer/docker-19-03-5.zip -OutFile .zip
-      - Stop-Service docker
       - Expand-Archive .zip -DestinationPath $Env:ProgramFiles -Force
       - Remove-Item -Force .zip
       - $null = Install-WindowsFeature containers
