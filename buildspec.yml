@@ -8,7 +8,7 @@ env:
 phases:
   pre_build:
     commands:
-      - Invoke-WebRequest -UseBasicParsing -OutFile .zip https://download.docker.com/components/engine/windows-server/19.03/.zip
+      - Invoke-WebRequest -Uri https://download.docker.com/components/engine/windows-server/19.03/.zip -OutFile .zip
       - Stop-Service docker
       - Expand-Archive .zip -DestinationPath $Env:ProgramFiles -Force
       - Remove-Item -Force .zip
