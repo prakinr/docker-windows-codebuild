@@ -6,9 +6,6 @@ env:
     SELF_NAME: mgcp_agent\codebuild_env
     
 phases:
-  pre_build:
-    commands:
-      - $(aws ecr get-login --no-include-email --region $env:AWS_DEFAULT_REGION)
   build:
     commands:
       - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:$env:CODEBUILD_BUILD_NUMBER -t $env:REPOSITORY_URI:latest -f $DOCKER_FILE
