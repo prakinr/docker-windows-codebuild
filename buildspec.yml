@@ -13,7 +13,6 @@ phases:
       - Remove-Item -Force .zip
       - $null = Install-WindowsFeature containers
       - $env:path += ";$env:ProgramFiles\docker"
-      - dockerd --register-service
       - Start-Service docker
 
   build:
