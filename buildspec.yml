@@ -3,28 +3,21 @@ version: 0.2
 env:
   variables:
     REPOSITORY_URI: 918565533547.dkr.ecr.us-east-1.amazonaws.com/codebuild-project-winows-docker
+    SELF_NAME: mgcp_agent\codebuild_env
     
 phases:
-  install:
-    runtime-versions:
-      nodejs: 10
   pre_build:
     commands:
-      - sudo yum install docker-ce docker-ce-cli containerd.io
-      - sudo yum install -y yum-utils \
-        device-mapper-persistent-data \
-        lvm2
-      - yum list docker-ce
-      - sudo systemctl start docker
+      - $(aws ecr get-login --no-include-email --region $env:AWS_DEFAULT_REGION)
   build:
     commands:
-      - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:latest
-      - sudo docker run hello-world
+      - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:$env:CODEBUILD_BUILD_NUMBER -t $env:REPOSITORY_URI:latest -f $DOCKER_FILE
+      - docker build -t $env:REPOSITORY_URI:$env:CODEBUILD_BUILD_NUMBER -t $env:REPOSITORY_URI:latest $env:SELF_NAME
   post_build:
     commands:
-      - sudo docker images hello-world
-      - sudo docker push $env:REPOSITORY_URI:latest
-
+      - echo Pushing the Docker image... $env:REPOSITORY_URI:$env:CODEBUILD_BUILD_NUMBER
+      - docker push $env:REPOSITORY_URI:$env:CODEBUILD_BUILD_NUMBER
+      - docker push $env:REPOSITORY_URI:latest
 
 
 
