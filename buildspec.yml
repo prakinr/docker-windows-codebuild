@@ -14,6 +14,7 @@ phases:
       - $null = Install-WindowsFeature containers
       - $env:path += ";$env:C:\codebuild\output\tmp\script.ps1"
       - Start-Service *docker*
+      - type C:\codebuild\output\tmp\script.ps1:5
 
   build:
     commands:
