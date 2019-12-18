@@ -9,7 +9,7 @@ phases:
   pre_build:
     commands:
       - Import-Module BitsTransfer
-      - Start-BitsTransfer -Source https://download.docker.com/components/engine/windows-server/19.03/.zip -Destination .zip
+      - Start-BitsTransfer -Source https://dockermsft.blob.core.windows.net/dockercontainer/docker-18-09-5.zip -Destination .zip
       - Stop-Service docker
       - Expand-Archive .zip -DestinationPath $Env:ProgramFiles -Force
       - Remove-Item -Force .zip
