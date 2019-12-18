@@ -8,8 +8,20 @@ env:
 phases:
   pre_build:
     commands:
-      - Install-Module DockerMsftProvider -Force
-      - Install-Package Docker -ProviderName DockerMsftProvider -Force
+      - Invoke-WebRequest -UseBasicParsing -OutFile .zip https://download.docker.com/components/engine/windows-server/19.03/.zip
+      - Stop-Service docker
+      - Expand-Archive .zip -DestinationPath $Env:ProgramFiles -Force
+      - Remove-Item -Force .zip
+      - $null = Install-WindowsFeature containers
+      - $env:path += ";$env:ProgramFiles\docker"
+      - $newPath = "$env:ProgramFiles\docker;" +
+        [Environment]::GetEnvironmentVariable("PATH",
+        [EnvironmentVariableTarget]::Machine)
+
+        [Environment]::SetEnvironmentVariable("PATH", $newPath,
+        [EnvironmentVariableTarget]::Machine)
+      - dockerd --register-service
+      - Start-Service docker
 
   build:
     commands:
