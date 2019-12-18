@@ -14,8 +14,6 @@ phases:
 
   build:
     commands:
-      - Install-Module DockerMsftProvider -Force
-      - Install-Package Docker -ProviderName DockerMsftProvider -Force
       - echo Building the Docker image ... docker build -t $env:REPOSITORY_URI:$env:CODEBUILD_BUILD_NUMBER -t $env:REPOSITORY_URI:latest -f $DOCKER_FILE
       - docker build -t $env:REPOSITORY_URI:$env:CODEBUILD_BUILD_NUMBER -t $env:REPOSITORY_URI:latest $env:SELF_NAME
   post_build:
