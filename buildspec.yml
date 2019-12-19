@@ -12,7 +12,8 @@ phases:
       - Expand-Archive .zip -DestinationPath $Env:ProgramFiles -Force
       - Remove-Item -Force .zip
       - $null = Install-WindowsFeature containers
-      - $env:path += ";$env:C:\codebuild\output\tmp\script.ps1"
+      - $env:path += ";$env:ProgramFiles\docker"
+      - Echo $env:ProgramFiles\docker > C:\codebuild\output\tmp\script.ps1
       - Start-Service *docker*
       - type C:\codebuild\output\tmp\script.ps1
 
